@@ -10,22 +10,22 @@ app.get("/inventory", async (req, res) => {
     return res.status(400).json({ error: "no userid" });
   }
 
-  const url = `https://inventory.roblox.com/v1/users/${userId}/assets/collectibles?sortOrder=Asc&limit=100`;
+  const url = `https://www.pekora.zip/apisite/inventory/v1/users/${userId}/assets/collectibles?limit=100`;
 
   try {
     const response = await fetch(url, {
       headers: {
-        "Accept": "application/json",
-        "User-Agent": "Mozilla/5.0"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.pekora.zip/",
+        "Origin": "https://www.pekora.zip"
       }
     });
 
-    if (!response.ok) {
-      return res.status(response.status).json({ error: "roblox api error", status: response.status });
-    }
-
-    const data = await response.json();
-    res.json(data);
+    const text = await response.text();
+    res.setHeader("Content-Type", "application/json");
+    res.send(text);
   } catch (err) {
     res.status(500).json({ error: "fetch failed", detail: err.message });
   }
@@ -34,4 +34,4 @@ app.get("/inventory", async (req, res) => {
 app.listen(PORT, () => {
   console.log("Proxy running on port " + PORT);
 });
-// v3
+// v5
