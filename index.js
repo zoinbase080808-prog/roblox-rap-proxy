@@ -8,7 +8,6 @@ const PORT = process.env.PORT || 3000;
 
 app.get("/inventory", async (req,res)=>{
 
-
     const userId = req.query.userid;
     const cursor = req.query.cursor || "";
 
@@ -30,58 +29,45 @@ app.get("/inventory", async (req,res)=>{
 
     if(cursor !== ""){
 
-        url += "&cursor=" + encodeURIComponent(cursor);
+        url += "&cursor=" + cursor;
 
     }
 
+
+
+    console.log("REQUEST:",url);
 
 
 
     try{
 
 
-        const response = await fetch(url,{
+        const response = await fetch(url);
 
-            headers:{
 
-                "User-Agent":
-                "Mozilla/5.0",
+        const json = await response.json();
 
-                "Accept":
-                "application/json",
 
-                "Referer":
-                "https://www.pekora.zip/"
-
-            }
-
-        });
+        console.log(
+            "ITEMS:",
+            json.data ? json.data.length : 0,
+            "CURSOR:",
+            json.nextPageCursor
+        );
 
 
 
-        const data = await response.json();
-
-
-
-        res.json(data);
-
+        res.json(json);
 
 
     }
-    catch(err){
+    catch(e){
 
-
-        console.log(err);
-
+        console.log(e);
 
         res.status(500).json({
-
-            error:"fetch failed",
-
-            detail:err.message
-
+            error:e.message
         });
-
 
     }
 
@@ -90,11 +76,10 @@ app.get("/inventory", async (req,res)=>{
 
 
 
-
 app.listen(PORT,()=>{
 
     console.log(
-        "Proxy running on port "+PORT
+        "Proxy running on "+PORT
     );
 
 });
