@@ -11,7 +11,7 @@ app.get("/inventory", async (req, res) => {
     return res.status(400).json({ error: "no userid" });
   }
 
-  const url = `https://www.pekora.zip/apisite/inventory/v1/users/${userId}/assets/collectibles?limit=100`;
+  const url = `https://inventory.roproxy.com/v1/users/${userId}/assets/collectibles?sortOrder=Asc&limit=100`;
 
   try {
     const response = await fetch(url);
